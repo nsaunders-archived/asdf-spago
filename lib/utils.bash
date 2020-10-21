@@ -37,7 +37,7 @@ download_release() {
   if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     bin="linux"
   elif [[ "$OSTYPE" == "darwin"* ]]; then
-    bin="macos"
+    bin="osx"
   else
     fail "unrecognized operating system $OSTYPE"
   fi
