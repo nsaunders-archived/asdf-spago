@@ -62,7 +62,7 @@ install_version() {
     mkdir -p "$install_path/bin"
     download_release "$version" "$release_file"
     tar -xzf "$release_file" -C "$install_path" || fail "Could not extract $release_file"
-    mv spago bin
+    mv $install_path/spago $install_path/bin
     rm "$release_file"
 
     test -x "$install_path/bin/spago" || fail "Expected $install_path/bin/spago to be executable."
