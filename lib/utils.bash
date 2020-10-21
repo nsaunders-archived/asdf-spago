@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for spago.
 GH_REPO="https://github.com/purescript/spago"
 
 fail() {
@@ -12,7 +11,6 @@ fail() {
 
 curl_opts=(-fsSL)
 
-# NOTE: You might want to remove this if spago is not hosted on GitHub releases.
 if [ -n "${GITHUB_API_TOKEN:-}" ]; then
   curl_opts=("${curl_opts[@]}" -H "Authorization: token $GITHUB_API_TOKEN")
 fi
@@ -24,23 +22,27 @@ sort_versions() {
 
 list_github_tags() {
   git ls-remote --tags --refs "$GH_REPO" |
-    grep -o 'refs/tags/.*' | cut -d/ -f3- |
-    sed 's/^v//' # NOTE: You might want to adapt this sed to remove non-version strings from tags
+    grep -o 'refs/tags/[0-9].*' | cut -d/ -f3-
 }
 
 list_all_versions() {
-  # TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-  # Change this function if spago has other means of determining installable versions.
   list_github_tags
 }
 
 download_release() {
-  local version filename url
+  local version filename bin url
   version="$1"
   filename="$2"
 
-  # TODO: Adapt the release URL convention for spago
-  url="$GH_REPO/archive/v${version}.tar.gz"
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    bin="linux"
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    bin="macos"
+  else
+    fail "unrecognized operating system $OSTYPE"
+  fi
+
+  url="$GH_REPO/releases/download/${version}/${bin}.tar.gz"
 
   echo "* Downloading spago release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -55,18 +57,15 @@ install_version() {
     fail "asdf-spago supports release installs only"
   fi
 
-  # TODO: Adapt this to proper extension and adapt extracting strategy.
   local release_file="$install_path/spago-$version.tar.gz"
   (
-    mkdir -p "$install_path"
+    mkdir -p "$install_path/bin"
     download_release "$version" "$release_file"
-    tar -xzf "$release_file" -C "$install_path" --strip-components=1 || fail "Could not extract $release_file"
+    tar -xzf "$release_file" -C "$install_path" || fail "Could not extract $release_file"
+    mv spago bin
     rm "$release_file"
 
-    # TODO: Asert spago executable exists.
-    local tool_cmd
-    tool_cmd="$(echo "spago" | cut -d' ' -f2-)"
-    test -x "$install_path/bin/$tool_cmd" || fail "Expected $install_path/bin/$tool_cmd to be executable."
+    test -x "$install_path/bin/spago" || fail "Expected $install_path/bin/spago to be executable."
 
     echo "spago $version installation was successful!"
   ) || (
