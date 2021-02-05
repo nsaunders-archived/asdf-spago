@@ -2,7 +2,7 @@
 
 # asdf-spago ![Build](https://github.com/nsaunders/asdf-spago/workflows/Build/badge.svg) ![Lint](https://github.com/nsaunders/asdf-spago/workflows/Lint/badge.svg)
 
-[spago](https://github.com/spago/spago) plugin for the [asdf version manager](https://asdf-vm.com).
+[spago](https://github.com/purescript/spago) plugin for the [asdf version manager](https://asdf-vm.com).
 
 </div>
 
