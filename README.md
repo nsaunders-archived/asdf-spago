@@ -1,6 +1,6 @@
 <div align="center">
 
-# asdf-spago [![Build](https://github.com/nsaunders/asdf-spago/workflows/Build/badge.svg)](https://github.com/nsaunders/asdf-spago/actions/workflows/build.yaml) ![Lint](https://github.com/nsaunders/asdf-spago/workflows/Lint/badge.svg)
+# asdf-spago [![Build](https://github.com/nsaunders/asdf-spago/workflows/Build/badge.svg)](https://github.com/nsaunders/asdf-spago/actions/workflows/build.yaml) [![Lint](https://github.com/nsaunders/asdf-spago/workflows/Lint/badge.svg)](https://github.com/nsaunders/asdf-spago/actions/workflows/lint.yaml)
 
 [spago](https://github.com/purescript/spago) plugin for the [asdf version manager](https://asdf-vm.com).
 
