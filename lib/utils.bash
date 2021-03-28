@@ -51,7 +51,7 @@ download_release() {
     minor_version=$(echo $version | cut -d'.' -f2)
     if [[ "$version" == "0.18.0" ]]; then
       bin="macOS-latest"
-    elif (( $major_version == 0 && $minor_version < 18 )); then
+    elif (($major_version == 0 && $minor_version < 18)); then
       bin="osx"
     else
       bin="macOS"
